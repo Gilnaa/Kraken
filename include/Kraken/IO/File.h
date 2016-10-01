@@ -122,6 +122,9 @@ namespace Kraken
         Default = UserRead | UserWrite | GroupRead | OthersRead
     };
 
+    ENUM_FLAGS(EFileFlags);
+    ENUM_FLAGS(EFileModes);
+
     /**
      * A basic POSIX file wrapper.
      *

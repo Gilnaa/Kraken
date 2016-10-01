@@ -52,6 +52,9 @@ namespace Kraken
         NonBlock = DoNotWait
     };
 
+    ENUM_FLAGS(ESendFlags);
+    ENUM_FLAGS(EReceiveFlags);
+
     /**
      * A templated socket wrapper.
      *
