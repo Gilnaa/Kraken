@@ -41,6 +41,7 @@ namespace Kraken
      */
     enum class EFileFlags
     {
+        None = 0,
         Append = O_APPEND,
         Async = O_ASYNC,
         CloseOnExec = O_CLOEXEC,
@@ -303,10 +304,26 @@ namespace Kraken
             return (m_descriptor > 0);
         }
 
+        /**
+         * Returns the underlying file-descriptor handle.
+         */
         fd_t GetFileDescriptor() const override
         {
             return m_descriptor;
         }
+
+        /**
+         * Creates a new uni-directional pipe and places its ends in the given `File`s.
+         *
+         * @param o_readEnd     A placeholder for the read-end of the pipe.
+         * @param o_writeEnd    A placeholder for the write-end of the pipe.
+         * @param flags         An optional set of flags.
+         *
+         * @note `flags` may contain these following flags: EFileFlags::{CloseOnExec,Direct,NonBlock}
+         *
+         * @return `0` on success; `-errno` on error.
+         */
+        static int Pipe(File &o_readEnd, File &o_writeEnd, EFileFlags flags = EFileFlags::None);
 
     protected:
         /**

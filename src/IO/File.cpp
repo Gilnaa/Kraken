@@ -156,3 +156,26 @@ void File::Close()
     close(m_descriptor);
     m_descriptor = -EBADFD;
 }
+
+int File::Pipe(File &o_readEnd, File &o_writeEnd, EFileFlags flags)
+{
+    int descriptors[2] = {-1, -1};
+
+    if (o_readEnd.IsOpen() || o_writeEnd.IsOpen())
+    {
+        KRAKEN_PRINT("Either of the passed pipe-ends is already open.");
+        return -EBUSY;
+    }
+
+    int err = pipe2(descriptors, (int)flags);
+    if (err != 0)
+    {
+        KRAKEN_PRINT("pipe2 syscall failed. errno = %d", errno);
+        return -errno;
+    }
+
+    o_readEnd.m_descriptor = descriptors[0];
+    o_writeEnd.m_descriptor = descriptors[1];
+
+    return 0;
+}
