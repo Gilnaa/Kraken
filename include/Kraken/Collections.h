@@ -43,6 +43,8 @@ namespace Kraken
     template<typename T, size_t N>
     struct array
     {
+        typedef T (&native_array_ref)[N];
+
     private:
         /**
          * Internal data representation
@@ -167,6 +169,22 @@ namespace Kraken
         operator const_slice() const
         {
             return const_slice(data);
+        }
+
+        /**
+         * Casts this array instance into a native-array reference.
+         */
+        operator native_array_ref()
+        {
+            return data;
+        }
+
+        /**
+         * Casts this array instance into a native-array const-reference.
+         */
+        operator const native_array_ref() const
+        {
+            return data;
         }
     };
 

@@ -29,9 +29,10 @@
 #define KRAKEN_FILE_H
 
 #include <errno.h>
-#include <Kraken/IO/IStream.h>
-#include <Kraken/Definitions.h>
 #include <fcntl.h>
+#include <Kraken/Definitions.h>
+#include <Kraken/IO/IEPollable.h>
+#include <Kraken/IO/IStream.h>
 
 namespace Kraken
 {
@@ -151,7 +152,8 @@ namespace Kraken
      * @author  Gilad "Salmon" Naaman
      * @since   30/09/2016
      */
-    class File : public IStream
+    class File : public IStream,
+                 public IEPollable
     {
     public:
         using IStream::Read;
@@ -299,6 +301,11 @@ namespace Kraken
         inline bool IsOpen()
         {
             return (m_descriptor > 0);
+        }
+
+        fd_t GetFileDescriptor() const override
+        {
+            return m_descriptor;
         }
 
     protected:
