@@ -33,7 +33,11 @@ The library contains (or will contain in the near future), the following wrapper
   - [ ] `VectorRead` & `VectorWrite` (+ at an offset).
   - [x] `IOControl`
 - [x] `Socket` - A generic wrapper around the `socket` syscall. The domain & type of the socket are given to the `Init` method.
-- Wrappers around posix Socket-Addresses horrible interface. (Kraken's implementation is horrible as well, but the user-facing interface is quite nice).
+- Wrappers around posix Socket-Addresses horrible interface. (Kraken's implementation is horrible as well, but the user-facing interface is quite nice):
+  - [x] Unix addresses (both file paths and abstract)
+  - [x] IPv4 addresses
+  - [x] IPv6 addresses
+  - [ ] Raw Ethernet
 - [ ] `Event` - eventfd wrapper.
 - [ ] `Timer` - timerfd wrapper.
 - [x] `EPoll`, `IEPollable` - Generic epoll wrappers.

@@ -114,48 +114,6 @@ namespace Kraken
         }
 
         /**
-         * Constructs a sub-range of the array.
-         *
-         * @param offset    The offset of the first element in the slice.
-         * @param size      The amount of elements to include in the slice.
-         *
-         * @note This functions returns an invalid slice on error (null, 0).
-         *
-         * @return          A `slice` pointing to the raw memory for the specified elements.
-         */
-        slice range(unsigned long offset, unsigned long size)
-        {
-            if ((offset + size) > N)
-            {
-                KRAKEN_PRINT("Invalid range requested.");
-                return slice(nullptr, 0);
-            }
-
-            return slice(&data[offset], sizeof(T) * (N - size));
-        }
-
-        /**
-         * Constructs an immutable sub-range of the array.
-         *
-         * @param offset    The offset of the first element in the slice.
-         * @param size      The amount of elements to include in the slice.
-         *
-         * @note This functions returns an invalid slice on error (null, 0).
-         *
-         * @return          A `const_slice` pointing to the raw memory for the specified elements.
-         */
-        const_slice range(unsigned long offset, unsigned long size) const
-        {
-            if ((offset + size) > N)
-            {
-                KRAKEN_PRINT("Invalid range requested.");
-                return slice(nullptr, 0);
-            }
-
-            return const_slice(&data[offset], sizeof(T) * (N - size));
-        }
-
-        /**
          * Casts this array instance into a `slice`.
          */
         operator slice()
