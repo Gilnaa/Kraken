@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Description>
+    <DeclarationOrder>
+        <public>0</public>
+        <protected>1</protected>
+        <private>2</private>
+    </DeclarationOrder>
+
+    <InternalVariables>
+        <regex>m_[A-Z]</regex>
+        <alignment>0</alignment>
+        <private>0</private> 
+    </InternalVariables>
+
+    <SemicolonSpace>0</SemicolonSpace>
+
+    <Indent>
+        <type>SPACE</type>
+        <size>4</size>
+        <noHeader>true</noHeader>
+        <allowBlockLine>true</allowBlockLine>
+    </Indent>
+
+    <Operator>
+        <spaceBefore>1</spaceBefore>
+        <spaceAfter>1</spaceAfter>
+    </Operator>
+
+    <VariablePerLine>
+        <maxNumber>1</maxNumber>
+    </VariablePerLine>
+</Description>
