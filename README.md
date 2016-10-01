@@ -27,20 +27,20 @@ For more information refer to the `docs/RESTRICTIONS.md` file.
 
 ## Features ##
 The library contains (or will contain in the near future), the following wrappers:
-- `File` - A wrapper for the basic and most common Linux File operations:
-  - `Open` & `Close`.
-  - `Read` & `Write` (+ at an offset).
-  - `VectorRead` & `VectorWrite` (+ at an offset).
-  - `IOControl`
-- `Socket` - A generic wrapper around the `socket` syscall. The domain & type of the socket are given to the `Init` method.
+- [x] `File` - A wrapper for the basic and most common Linux File operations:
+  - [x] `Open` & `Close`.
+  - [x] `Read` & `Write` (+ at an offset).
+  - [ ] `VectorRead` & `VectorWrite` (+ at an offset).
+  - [x] `IOControl`
+- [x] `Socket` - A generic wrapper around the `socket` syscall. The domain & type of the socket are given to the `Init` method.
 - Wrappers around posix Socket-Addresses horrible interface. (Kraken's implementation is horrible as well, but the user-facing interface is quite nice).
-- `Event` - eventfd wrapper.
-- `Timer` - timerfd wrapper.
-- `EPoll`, `IEPollable` - Generic epoll wrappers.
+- [ ] `Event` - eventfd wrapper.
+- [ ] `Timer` - timerfd wrapper.
+- [x] `EPoll`, `IEPollable` - Generic epoll wrappers.
 - Collections:
-  - `slice` - A simple struct that holds the address and size of the buffer. (probably quite useless on its own).
-  - `slice_adapter`- A weird way to bridge between third-party collections and `slice`.
-  - `array` - An almost-copy of `std::array` that can be implicitly converted to a `slice`.
+  - [x] `slice` - A simple struct that holds the address and size of the buffer. (probably quite useless on its own).
+  - [x] `slice_adapter`- A weird way to bridge between third-party collections and `slice`.
+  - [x] `array` - An almost-copy of `std::array` that can be implicitly converted to a `slice`.
 
 ## About slices ##
 Slices are a compromise that allows the user to avoid passing raw-pointers and their size.
