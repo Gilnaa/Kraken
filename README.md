@@ -4,6 +4,8 @@ Kraken is a very minimal replacement for a standard library for C++ with a very 
 
 It is designed for use on embedded Linux system for specific use cases.
 
+Nothing in this library is new or exciting, it just adheres to a very specific set of rules.
+
 ## Restricttions ##
 Kraken is designed for use in security aware embedded Linux devices, and it doesn't use any of the following:
  - libstdc++
