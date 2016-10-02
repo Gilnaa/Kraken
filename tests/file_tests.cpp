@@ -5,8 +5,8 @@
  * @since   01/10/2016
  */
 
-#include <Kraken/IO/File.h>
 #include <gtest/gtest.h>
+#include <Kraken/IO/File.h>
 #include <Kraken/Collections.h>
 
 using namespace Kraken;

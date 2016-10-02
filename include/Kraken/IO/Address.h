@@ -28,7 +28,7 @@
 #ifndef KRAKEN_ADDRESS_H
 #define KRAKEN_ADDRESS_H
 
-#include <Kraken/Slice.h>
+#include <Kraken/membuf.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <arpa/inet.h>

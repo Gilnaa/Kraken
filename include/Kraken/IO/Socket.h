@@ -360,7 +360,7 @@ namespace Kraken
         }
 
         /**
-         * Sends a memory slice through the socket.
+         * Sends a membuf through the socket.
          *
          * @note The socket must be connect in order for this function to work.
          *
@@ -368,20 +368,20 @@ namespace Kraken
          * @param flags     Send flags.
          * @return On success, this function returns the amount of bytes sent; on error `-errno`.
          */
-        inline ssize_t Send(const_slice mem, ESendFlags flags = ESendFlags::None)
+        inline ssize_t Send(const_membuf mem, ESendFlags flags = ESendFlags::None)
         {
             return Send(mem.buffer, mem.length, flags);
         }
 
         /**
-         * Sends a memory slice through the socket to the specified destination.
+         * Sends a membuf through the socket to the specified destination.
          *
          * @param mem           The buffer to send.
          * @param flags         Send flags.
          * @param destination   The address of the remote endpoint.
          * @return On success, this function returns the amount of bytes sent; on error `-errno`.
          */
-        inline ssize_t Send(const_slice mem, const addr_t &destination, ESendFlags flags = ESendFlags::None)
+        inline ssize_t Send(const_membuf mem, const addr_t &destination, ESendFlags flags = ESendFlags::None)
         {
             return Send(mem.buffer, mem.length, destination, flags);
         }
@@ -393,7 +393,7 @@ namespace Kraken
          * @param flags     Receive flags.
          * @return On success, this function returns the amount of bytes received; on error `-errno`.
          */
-        inline ssize_t Receive(slice o_mem, EReceiveFlags flags = EReceiveFlags::None)
+        inline ssize_t Receive(membuf o_mem, EReceiveFlags flags = EReceiveFlags::None)
         {
             return Receive(o_mem.buffer, o_mem.length, flags);
         }
@@ -406,7 +406,7 @@ namespace Kraken
          * @param flags             Receive flags.
          * @return On success, this function returns the amount of bytes received; on error `-errno`.
          */
-        inline ssize_t Receive(slice o_mem, addr_t &o_senderAddress, EReceiveFlags flags = EReceiveFlags::None)
+        inline ssize_t Receive(membuf o_mem, addr_t &o_senderAddress, EReceiveFlags flags = EReceiveFlags::None)
         {
             return Receive(o_mem.buffer, o_mem.length, o_senderAddress, flags);
         }

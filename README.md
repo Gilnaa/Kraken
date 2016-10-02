@@ -42,20 +42,20 @@ The library contains (or will contain in the near future), the following wrapper
 - [ ] `Timer` - timerfd wrapper.
 - [x] `EPoll`, `IEPollable` - Generic epoll wrappers.
 - Collections:
-  - [x] `slice` - A simple struct that holds the address and size of the buffer. (probably quite useless on its own).
-  - [x] `slice_adapter`- A weird way to bridge between third-party collections and `slice`.
-  - [x] `array` - An almost-copy of `std::array` that can be implicitly converted to a `slice`.
+  - [x] `membuf` - A simple struct that holds the address and size of the buffer. (probably quite useless on its own).
+  - [x] `membuf_adapter`- A weird way to bridge between third-party collections and `membuf`.
+  - [x] `array` - An almost-copy of `std::array` that can be implicitly converted to a `membuf`.
 
-## About slices ##
-Slices are a compromise that allows the user to avoid passing raw-pointers and their size.
-Although the slice itself is just that - a pointer and an integer - it allows sending varous buffer-like object directly to Kraken functions.
+## About membufs ##
+`membuf`s are a compromise that allows the user to avoid passing raw-pointers and their size.
+Although the membuf itself is just that - a pointer and an integer - it allows sending varous buffer-like object directly to Kraken functions.
 
-Each IO function is written first by receiving a `void *, size_t` pair, and then an overload is added that receives a slice instead.
+Each IO function is written first by receiving a `void *, size_t` pair, and then an overload is added that receives a membuf instead.
   
-All the Kraken collections that represent buffers are implicitly converted to a slice.
+All the Kraken collections that represent buffers are implicitly converted to a membuf.
 
 Even though Kraken itself does not use stdc++ or have any dependencies (except for libc), we do not want to prevent you
 from using any library for its collections.
-For that reason, there's an ugly and convoluted way to extend third-party objects to support implicit slice conversion.
+For that reason, there's an ugly and convoluted way to extend third-party objects to support implicit membuf conversion.
 
-Refer to `docs/SLICES.md` for more information.
+Refer to `docs/MEMBUF.md` for more information.

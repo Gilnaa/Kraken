@@ -28,7 +28,7 @@
 #ifndef KRAKEN_COLLECTIONS_H
 #define KRAKEN_COLLECTIONS_H
 
-#include <Kraken/Slice.h>
+#include <Kraken/membuf.h>
 #include <Kraken/Definitions.h>
 
 namespace Kraken
@@ -114,19 +114,19 @@ namespace Kraken
         }
 
         /**
-         * Casts this array instance into a `slice`.
+         * Casts this array instance into a `membuf`.
          */
-        operator slice()
+        operator membuf()
         {
-            return slice(data);
+            return membuf(data);
         }
 
         /**
-         * Casts this array instance into a `slice`.
+         * Casts this array instance into a `const_membuf`.
          */
-        operator const_slice() const
+        operator const_membuf() const
         {
-            return const_slice(data);
+            return const_membuf(data);
         }
 
         /**

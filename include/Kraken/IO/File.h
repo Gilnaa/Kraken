@@ -222,16 +222,16 @@ namespace Kraken
         ssize_t Read(void *o_buffer, size_t length, size_t offset);
 
         /**
-         * Read from an offset in the file into the given slice.
+         * Read from an offset in the file into the given membuf.
          *
-         * @param o_mem     The slice to fill with data.
+         * @param o_mem     The membuf to fill with data.
          * @param offset    The starting offset of the read.
          *
-         * @note The function may return a valid-value that is smaller than the length of the slice.
+         * @note The function may return a valid-value that is smaller than the length of the membuf.
          *
          * @return  The number of bytes read on success; `-errno` on error.
          */
-        inline ssize_t Read(slice o_mem, size_t offset)
+        inline ssize_t Read(membuf o_mem, size_t offset)
         {
             return Read(o_mem.buffer, o_mem.length, offset);
         }
@@ -264,14 +264,14 @@ namespace Kraken
         /**
          * Write the given buffer to the file at an offset.
          *
-         * @param mem       The slice to write.
+         * @param mem       The membuf to write.
          * @param offset    The starting offset of the write.
          *
-         * @note The function may return a valid-value that is smaller than the length of the slice.
+         * @note The function may return a valid-value that is smaller than the length of the membuf.
          *
          * @return The amount of bytes written on success; `-errno` otherwise.
          */
-        inline ssize_t Write(const_slice mem, size_t offset)
+        inline ssize_t Write(const_membuf mem, size_t offset)
         {
             return Write(mem.buffer, mem.length, offset);
         }

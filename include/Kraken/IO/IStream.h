@@ -29,7 +29,7 @@
 #define KRAKEN_ISTREAM_H
 
 #include <stdlib.h>
-#include "Kraken/Slice.h"
+#include "Kraken/membuf.h"
 
 namespace Kraken
 {
@@ -75,7 +75,7 @@ namespace Kraken
          *
          * @return The amount of bytes read on success; `-errno` otherwise.
          */
-        inline ssize_t Read(slice mem)
+        inline ssize_t Read(membuf mem)
         {
             return Read(mem.buffer, mem.length);
         }
@@ -83,13 +83,13 @@ namespace Kraken
         /**
          * Write the given buffer to the stream.
          *
-         * @param mem   The memory slice to write.
+         * @param mem   The memory membuf to write.
          *
-         * @note The function may return a valid-value that is smaller the size of the slice.
+         * @note The function may return a valid-value that is smaller the size of the membuf.
          *
          * @return The amount of bytes written on success; `-errno` otherwise.
          */
-        inline ssize_t Write(const_slice mem)
+        inline ssize_t Write(const_membuf mem)
         {
             return Write(mem.buffer, mem.length);
         }
