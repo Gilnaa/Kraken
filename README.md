@@ -32,7 +32,10 @@ The library contains (or will contain in the near future), the following wrapper
   - [x] `Read` & `Write` (+ at an offset).
   - [ ] `VectorRead` & `VectorWrite` (+ at an offset).
   - [x] `IOControl`
+  - [ ] `Splice`
+  - [x] `File::Pipe` - Create a pair of pipe ends using the `pipe` syscall.
 - [x] `Socket` - A generic wrapper around the `socket` syscall. The domain & type of the socket are given to the `Init` method.
+  - [ ] `Socket::Pair` - Create a pair of connected sockets (`socketpair`).
 - Wrappers around posix Socket-Addresses horrible interface. (Kraken's implementation is horrible as well, but the user-facing interface is quite nice):
   - [x] Unix addresses (both file paths and abstract)
   - [x] IPv4 addresses

@@ -42,6 +42,7 @@ namespace Kraken
     enum class EFileFlags
     {
         None = 0,
+
         Read = O_RDONLY,
         Write = O_WRONLY,
         ReadWrite = O_RDWR,
