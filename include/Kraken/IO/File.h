@@ -175,7 +175,7 @@ namespace Kraken
          * @note This does not disable RAII, so if the File the file object goes out of scope,
          *          the kernel object will be closed.
          *
-         * @param descriptor
+         * @param descriptor The file descriptor to use.
          */
         File(int descriptor) : m_descriptor(descriptor < 0 ? -EBADFD : descriptor) {}
 
