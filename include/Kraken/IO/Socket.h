@@ -88,8 +88,6 @@ namespace Kraken
     class Socket : public File
     {
     public:
-        using addr_t = Address<D>;
-
         virtual ~Socket()
         {
             if (IsOpen())
@@ -98,6 +96,11 @@ namespace Kraken
             }
         }
 
+        /**
+         * Perform a shutdown of the socket.
+         *
+         * @todo Add support for non-symetrical shutdown.
+         */
         void Shutdown()
         {
             shutdown(m_descriptor, SHUT_RDWR);
@@ -137,7 +140,7 @@ namespace Kraken
          * @param localAddress  The local address to bind to.
          * @return `0` on success; `-errno` on error.
          */
-        int Bind(const addr_t &localAddress)
+        int Bind(const Address<D> &localAddress)
         {
             int err = 0;
 
@@ -177,12 +180,12 @@ namespace Kraken
         /**
          * Connect to a remote address.
          *
-         * @note Exact semantics depend on the @ref ESocketType of the socket.
+         * @note Exact semantics depend on the ESocketType of the socket.
          *
          * @param remoteAddress The address to connect to.
          * @return  `0` on success, `-errno` on error.
          */
-        int Connect(const addr_t &remoteAddress)
+        int Connect(const Address<D> &remoteAddress)
         {
             int err = 0;
 
@@ -207,7 +210,7 @@ namespace Kraken
          */
         int Accept(Socket &o_client)
         {
-            addr_t wastefulImplementationDetail;
+            Address<D> wastefulImplementationDetail;
             return Accept(o_client, wastefulImplementationDetail);
         }
 
@@ -220,10 +223,10 @@ namespace Kraken
          * @param o_clientAddress   An address object to be filled by the connection source's address.
          * @return `0` on success; `-errno` on error.
          */
-        int Accept(Socket &o_client, addr_t &o_clientAddress)
+        int Accept(Socket &o_client, Address<D> &o_clientAddress)
         {
             int descriptor;
-            socklen_t addressLength = addr_t::s_MaxSize;
+            socklen_t addressLength = Address<D>::s_MaxSize;
 
             if (o_client.IsOpen())
             {
@@ -281,7 +284,7 @@ namespace Kraken
          * @param flags         Send flags
          * @return On success, this function returns the amount of bytes sent; on error `-errno`.
          */
-        ssize_t Send(const void *buffer, size_t length, const addr_t &destination, ESendFlags flags = ESendFlags::None)
+        ssize_t Send(const void *buffer, size_t length, const Address<D> &destination, ESendFlags flags = ESendFlags::None)
         {
             ssize_t bytesSent;
 
@@ -337,9 +340,9 @@ namespace Kraken
          * @param flags             Receive flag.
          * @return On success, this function returns the amount of bytes received; on error `-errno`.
          */
-        ssize_t Receive(void *o_buffer, size_t length, addr_t &o_senderAddress, EReceiveFlags flags = EReceiveFlags::None)
+        ssize_t Receive(void *o_buffer, size_t length, Address<D> &o_senderAddress, EReceiveFlags flags = EReceiveFlags::None)
         {
-            socklen_t addressLength = addr_t::s_MaxSize;
+            socklen_t addressLength = Address<D>::s_MaxSize;
             ssize_t bytesReceived;
 
             if (o_buffer == nullptr)
@@ -381,7 +384,7 @@ namespace Kraken
          * @param destination   The address of the remote endpoint.
          * @return On success, this function returns the amount of bytes sent; on error `-errno`.
          */
-        inline ssize_t Send(const_membuf mem, const addr_t &destination, ESendFlags flags = ESendFlags::None)
+        inline ssize_t Send(const_membuf mem, const Address<D> &destination, ESendFlags flags = ESendFlags::None)
         {
             return Send(mem.buffer, mem.length, destination, flags);
         }
@@ -406,7 +409,7 @@ namespace Kraken
          * @param flags             Receive flags.
          * @return On success, this function returns the amount of bytes received; on error `-errno`.
          */
-        inline ssize_t Receive(membuf o_mem, addr_t &o_senderAddress, EReceiveFlags flags = EReceiveFlags::None)
+        inline ssize_t Receive(membuf o_mem, Address<D> &o_senderAddress, EReceiveFlags flags = EReceiveFlags::None)
         {
             return Receive(o_mem.buffer, o_mem.length, o_senderAddress, flags);
         }

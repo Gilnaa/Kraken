@@ -37,6 +37,9 @@ namespace Kraken
      */
     using fd_t = int;
 
+    /**
+     * Determines whether the given type is an enum class.
+     */
     template<typename T>
     using is_enum_class = std::integral_constant<bool, std::is_enum<T>::value && !std::is_convertible<T, int>::value>;
 

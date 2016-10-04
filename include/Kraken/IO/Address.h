@@ -113,16 +113,40 @@ namespace Kraken
             data.sun_family = ~(sa_family_t)AF_UNIX; // Mark as invalid
         }
 
+        /**
+         * Tries to initialise this UnixAddress with a path.
+         *
+         * @note This call may fail; you can check with @ref IsValid
+         * @note Do not use this constructor for abstract addresses.
+         *
+         * @param path The file-system path of the socket.
+         */
         Address(const char *path) : Address()
         {
             Init(path);
         }
 
+        /**
+         * Tries to initialise this UnixAddress with a sized path.
+         *
+         * @note This call may fail; you can check with @ref IsValid
+         *
+         * @param path      The file-system path of the socket.
+         * @param length    The length of the path.
+         */
         Address(const char *path, size_t length) : Address()
         {
             Init(path, length);
         }
 
+        /**
+         * Initialises this UnixAddress instance.
+         *
+         * @note This overload does not support abstract addresses.
+         *
+         * @param path The path to use.
+         * @return `true` on success; `false` on invalid input.
+         */
         bool Init(const char *path)
         {
             if (path == nullptr)
@@ -139,6 +163,13 @@ namespace Kraken
             return Init(path, strnlen(path, s_MaxPathLength));
         }
 
+        /**
+         * Initialises this UnixAddress instance with a path
+         *
+         * @param path          The path to use.
+         * @param pathLength    The length of the path.
+         * @return `true` on success; `false` on invalid input.
+         */
         bool Init(const char *path, size_t pathLength)
         {
             data.sun_family = ~(sa_family_t)AF_UNIX; // Invalidate address.
@@ -162,11 +193,20 @@ namespace Kraken
             return true;
         }
 
+        /**
+         * @return The current length of the address.
+         */
         inline socklen_t GetLength() const
         {
-            return sizeof(struct sockaddr_un);
+            return length;
         }
 
+        /**
+         * Sets the length of the address.
+         * Used mainly for abstract addresses which are not null-terminated.
+         *
+         * @param newLength The new length of the address.
+         */
         inline void SetLength(socklen_t newLength)
         {
             // UnixAddress need to support variable-size (in a range, of course) in order to support
@@ -186,21 +226,42 @@ namespace Kraken
             }
         }
 
+        /**
+         * @return A pointer to the start of the address buffer.
+         */
         inline sockaddr *GetBase()
         {
             return (sockaddr *)&data;
         }
 
+        /**
+         * @return A const pointer to the start of the address buffer.
+         */
         inline const sockaddr *GetBase() const
         {
             return (sockaddr *)&data;
         }
 
+        /**
+         * @return `true` if the address is valid and initialised; `false` otherwise.
+         */
         inline bool IsValid() const
         {
             return (data.sun_family == AF_UNIX);
         }
 
+        /**
+         * @return `true` if the path is valid and abstract; `false` otherwise.
+         */
+        inline bool IsAbstract()
+        {
+            return IsValid() && (data.sun_path[0] == '\0');
+        }
+
+        /**
+         * @note This function returns unmeaningful result when using an abstract address.
+         * @return The path of the socket on the file-system.
+         */
         inline const char *GetPath()
         {
             return data.sun_path;

@@ -15,8 +15,6 @@ void types()
     static_assert(std::is_same<UnixAddress, Address<ESocketDomain::Unix> >::value, "");
     static_assert(std::is_same<IPv4Address, Address<ESocketDomain::IPv4> >::value, "");
     static_assert(std::is_same<IPv6Address, Address<ESocketDomain::IPv6> >::value, "");
-
-    static_assert(std::is_same<UnixAddress, UnixSocket::addr_t>::value, "");
 }
 
 int UDS()

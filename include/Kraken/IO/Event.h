@@ -71,8 +71,8 @@ namespace Kraken
          *
          * @param descriptor The file descriptor to use.
          */
-        Event(fd_t fd) :
-                m_descriptor(fd >= 0 ? fd : -EBADFD)
+        Event(fd_t descriptor) :
+                m_descriptor(descriptor >= 0 ? descriptor : -EBADFD)
         {}
 
         virtual ~Event()
