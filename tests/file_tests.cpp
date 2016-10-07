@@ -31,3 +31,18 @@ TEST(FileTests, Pipe)
 
     ASSERT_EQ(File::Pipe(a, b), -EBUSY);
 }
+
+TEST(FileTests, UMask)
+{
+    mode_t originalValue = umask(0);
+    EXPECT_EQ(umask(originalValue), 0); // Why the hell not.
+
+    {
+        ScopedUMask mask(EFileModes::OthersAll);
+        ASSERT_EQ(mask.previousMask, originalValue);
+    }
+
+    mode_t expectedOriginal = umask(0);
+    ASSERT_EQ(expectedOriginal, originalValue);
+    umask(originalValue);
+}

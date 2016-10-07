@@ -33,6 +33,7 @@
 #include <Kraken/Definitions.h>
 #include <Kraken/IO/IEPollable.h>
 #include <Kraken/IO/IStream.h>
+#include <sys/stat.h>
 
 namespace Kraken
 {
@@ -340,6 +341,21 @@ namespace Kraken
          * Deleted to disallow duplicating the file.
          */
         File(const File &) = delete;
+    };
+
+    struct ScopedUMask
+    {
+        mode_t previousMask;
+
+        ScopedUMask(EFileModes newMode)
+        {
+            previousMask = umask((mode_t)newMode);
+        }
+
+        ~ScopedUMask()
+        {
+            umask(previousMask);
+        }
     };
 }
 

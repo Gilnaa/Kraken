@@ -30,6 +30,7 @@
 
 #include <stdlib.h>     // For size_t
 #include <type_traits>  // For false_type, true_type, is_pod
+#include <Kraken/MetaSquid.h>
 
 namespace Kraken
 {
@@ -45,35 +46,6 @@ namespace Kraken
      */
     template<typename T>
     struct membuf_adapter;
-
-    /**
-     * details-gettho used to contain templates.
-     */
-    namespace details
-    {
-        template <typename T>
-        struct is_complete
-        {
-        private:
-            typedef char no, (&yes)[2];
-
-            template <typename U, typename = decltype(sizeof(U)) >
-            static yes check(U*);
-
-            template <typename U>
-            static no check(...);
-
-        public:
-            enum { value = sizeof(check< T >(nullptr)) == sizeof(yes) };
-        };
-
-        template <typename T>
-        struct adapter_proxy
-        {
-            static_assert(is_complete<membuf_adapter<T> >::value, "membuf_adapter is not implemented for T");
-            typedef membuf_adapter<T> type;
-        };
-    }
 
     /**
      * A wrapper around a sized, untyped, mutable memory buffer.
@@ -112,8 +84,8 @@ namespace Kraken
          * @tparam T    The type of the object. Must have membuf_adapter<T> implemented for.
          */
         template <typename T>
-        membuf(T &o) : buffer(details::adapter_proxy<T>::type::addr(o)),
-                      length(details::adapter_proxy<T>::type::size(o)) { }
+        membuf(T &o) : buffer(MetaSquid::enable_if_complete<membuf_adapter<T>>::type::addr(o)),
+                       length(MetaSquid::enable_if_complete<membuf_adapter<T>>::type::size(o)) { }
 
         /**
          * Construct a new membuf from an array.
@@ -192,8 +164,8 @@ namespace Kraken
          * @tparam T    The type of the object. Must have membuf_adapter<T> implemented for.
          */
         template <typename T>
-        const_membuf(const T &o) : buffer(details::adapter_proxy<T>::type::addr(o)),
-                                  length(details::adapter_proxy<T>::type::size(o)) { }
+        const_membuf(const T &o) : buffer(MetaSquid::enable_if_complete<membuf_adapter<T>>::type::addr(o)),
+                                   length(MetaSquid::enable_if_complete<membuf_adapter<T>>::type::size(o)) { }
 
         /**
          * Construct a new const_membuf from an array.
