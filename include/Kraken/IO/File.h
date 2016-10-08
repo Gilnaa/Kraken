@@ -343,15 +343,31 @@ namespace Kraken
         File(const File &) = delete;
     };
 
+    /**
+     * Temporarily changes the process's file creation mask.
+     * The old mask will be restored when the object exits the scope.
+     *
+     * @see man 2 umask
+     */
     struct ScopedUMask
     {
         mode_t previousMask;
 
+        /**
+         * Changes the processes file creation mask.
+         *
+         * @note Any bits not in the 0777 mask (classic file permissions) are discarded.
+         *
+         * @param newMode The new mask
+         */
         ScopedUMask(EFileModes newMode)
         {
             previousMask = umask((mode_t)newMode);
         }
 
+        /**
+         * Restores the original umask.
+         */
         ~ScopedUMask()
         {
             umask(previousMask);
