@@ -96,7 +96,7 @@ ssize_t File::Write(const void *buffer, size_t length)
     return res;
 }
 
-ssize_t File::Read(void *o_buffer, size_t length, size_t offset)
+ssize_t File::Read(void *o_buffer, size_t length, off_t offset)
 {
     ssize_t res = 0;
 
@@ -116,7 +116,7 @@ ssize_t File::Read(void *o_buffer, size_t length, size_t offset)
     return res;
 }
 
-ssize_t File::Write(const void *buffer, size_t length, size_t offset)
+ssize_t File::Write(const void *buffer, size_t length, off_t offset)
 {
     ssize_t res = 0;
 

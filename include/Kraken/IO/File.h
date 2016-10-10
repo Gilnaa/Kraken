@@ -224,7 +224,7 @@ namespace Kraken
          *
          * @return  The number of bytes read on success; `-errno` on error.
          */
-        ssize_t Read(void *o_buffer, size_t length, size_t offset);
+        ssize_t Read(void *o_buffer, size_t length, off_t offset);
 
         /**
          * Read from an offset in the file into the given membuf.
@@ -236,9 +236,21 @@ namespace Kraken
          *
          * @return  The number of bytes read on success; `-errno` on error.
          */
-        inline ssize_t Read(membuf o_mem, size_t offset)
+        inline ssize_t Read(membuf o_mem, off_t offset)
         {
             return Read(o_mem.buffer, o_mem.length, offset);
+        }
+
+        template <size_t N>
+        ssize_t Read(membuf (&vectors)[N])
+        {
+
+        }
+
+        template <size_t N>
+        ssize_t Read(membuf (&vectors)[N], off_t offset)
+        {
+
         }
 
         /**
@@ -264,7 +276,7 @@ namespace Kraken
          *
          * @return The amount of bytes written on success; `-errno` otherwise.
          */
-        ssize_t Write(const void *buffer, size_t length, size_t offset);
+        ssize_t Write(const void *buffer, size_t length, off_t offset);
 
         /**
          * Write the given buffer to the file at an offset.
@@ -276,7 +288,7 @@ namespace Kraken
          *
          * @return The amount of bytes written on success; `-errno` otherwise.
          */
-        inline ssize_t Write(const_membuf mem, size_t offset)
+        inline ssize_t Write(const_membuf mem, off_t offset)
         {
             return Write(mem.buffer, mem.length, offset);
         }
