@@ -169,6 +169,9 @@ namespace Kraken
          * Kernel handle for the epoll object.
          */
         fd_t m_descriptor;
+
+    private:
+        EPoll(const EPoll &) = delete;
     };
 }
 

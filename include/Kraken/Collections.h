@@ -31,6 +31,10 @@
 #include <Kraken/membuf.h>
 #include <Kraken/Definitions.h>
 
+// Extra collections
+#include <Kraken/Stack.h>
+#include <Kraken/Queue.h>
+
 namespace Kraken
 {
     /**

@@ -413,7 +413,39 @@ namespace Kraken
         {
             return Receive(o_mem.buffer, o_mem.length, o_senderAddress, flags);
         }
+
+    public:
+        /**
+         * Creates a pair of connected sockets.
+         *
+         * @param type          The domain of the created sockets.
+         * @param o_socket1     A reference to a non-opened socket object.
+         * @param o_socket2     A reference to a non-opened socket object.
+         * @return `0` on success; `-errno` on error.
+         */
+        static int Pair(ESocketType type, Socket &o_socket1, Socket &o_socket2)
+        {
+            int fds[2] = {-EBADFD, -EBADFD};
+            int sockErr = 0;
+
+            if (o_socket1.IsOpen() || o_socket2.IsOpen())
+            {
+                return -EBUSY;
+            }
+
+            sockErr = socketpair((int)D, (int)type, 0, fds);
+            if (sockErr != 0)
+            {
+                return -errno;
+            }
+
+            o_socket1.m_descriptor = fds[0];
+            o_socket2.m_descriptor = fds[1];
+
+            return 0;
+        }
     };
+
 
     using UnixSocket = Socket<ESocketDomain::Unix>;
     using IPv4Socket = Socket<ESocketDomain::IPv4>;

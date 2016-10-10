@@ -41,13 +41,15 @@ The library contains (or will contain in the near future), the following wrapper
   - [x] IPv4 addresses
   - [x] IPv6 addresses
   - [ ] Raw Ethernet
-- [ ] `Event` - eventfd wrapper.
-- [ ] `Timer` - timerfd wrapper.
+- [x] `Event` - eventfd wrapper.
+- [x] `Timer` - timerfd wrapper.
 - [x] `EPoll`, `IEPollable` - Generic epoll wrappers.
 - Collections:
   - [x] `membuf` - A simple struct that holds the address and size of the buffer. (probably quite useless on its own).
   - [x] `membuf_adapter`- A weird way to bridge between third-party collections and `membuf`.
   - [x] `array` - An almost-copy of `std::array` that can be implicitly converted to a `membuf`.
+  - [x] `Queue` - Not-as-thread-safe-as-it-could-have-been queue.
+  - [x] `Stack` - Not-as-thread-safe-as-it-could-have-been stack.
 
 ## About membufs ##
 `membuf`s are a compromise that allows the user to avoid passing raw-pointers and their size.

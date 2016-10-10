@@ -360,10 +360,9 @@ namespace Kraken
          *
          * @param newMode The new mask
          */
-        ScopedUMask(EFileModes newMode)
-        {
-            previousMask = umask((mode_t)newMode);
-        }
+        ScopedUMask(EFileModes newMode) :
+                previousMask(umask((mode_t)newMode))
+        {}
 
         /**
          * Restores the original umask.

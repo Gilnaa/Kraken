@@ -148,7 +148,7 @@ namespace Kraken
         /**
          * Returns the underlying file-descriptor handle.
          */
-        fd_t GetFileDescriptor() const override
+        fd_t GetFileDescriptor() const override final
         {
             return m_descriptor;
         }
@@ -159,6 +159,8 @@ namespace Kraken
         void Close();
 
     private:
+        Event(const Event &) = delete;
+
         fd_t m_descriptor;
     };
 }

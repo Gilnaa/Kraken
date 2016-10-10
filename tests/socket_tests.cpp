@@ -149,5 +149,19 @@ TEST_F(SocketTest, AcceptFrom)
     ASSERT_EQ(memcmp(&expectedAddress, &remoteAddress, sizeof(remoteAddress)), 0);
 
     remoteClient.Shutdown();
+    client.Shutdown();
     server.Shutdown();
+}
+
+TEST_F(SocketTest, Pair)
+{
+    UnixSocket a, b;
+    uint8_t buffer0[1024] = { 0 };
+    uint8_t buffer1[1024];
+
+    ASSERT_EQ(0, UnixSocket::Pair(ESocketType::Datagram, a, b));
+    ASSERT_EQ(a.Send(buffer0), sizeof(buffer0));
+    ASSERT_EQ(b.Receive(buffer1), sizeof(buffer1));
+
+    ASSERT_EQ(-EBUSY, UnixSocket::Pair(ESocketType::Datagram, a, b));
 }

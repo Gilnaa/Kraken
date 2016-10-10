@@ -30,6 +30,7 @@
 
 #include <type_traits>
 #include <stdlib.h>
+#include <string.h>
 
 namespace Kraken
 {
@@ -44,10 +45,8 @@ namespace MetaSquid
      *
      * @tparam T The type in question.
      */
-    template <typename T>
-    struct is_complete
+    struct is_complete_helper
     {
-    private:
         using no = char;
         using yes = char (&)[2];
 
@@ -56,10 +55,10 @@ namespace MetaSquid
 
         template <typename U>
         static no check(...);
-
-    public:
-        enum { value = sizeof(check< T >(nullptr)) == sizeof(yes) };
     };
+
+    template<class T>
+    using is_complete = std::integral_constant<bool, sizeof(is_complete_helper::check<T>(nullptr)) == sizeof(is_complete_helper::yes)>;
 
     template <typename T>
     struct enable_if_complete
@@ -72,19 +71,19 @@ namespace MetaSquid
      * @return The length of the given array (not its size).
      */
     template <typename T, size_t N>
-    inline size_t lengthof(T (&)[N])
+    constexpr size_t lengthof(const T (&)[N])
     {
         return N;
     };
 
     template <typename T, size_t N>
-    inline T &last(T (&array)[N])
+    constexpr T &last(T (&array)[N])
     {
         return array[N - 1];
     };
 
     template <typename T, size_t N>
-    inline const T &last(const T (&array)[N])
+    constexpr const T &last(const T (&array)[N])
     {
         return array[N - 1];
     };
@@ -94,6 +93,27 @@ namespace MetaSquid
      */
     template<typename T>
     using is_enum_class = std::integral_constant<bool, std::is_enum<T>::value && !std::is_convertible<T, int>::value>;
+
+    template <class T>
+    typename std::enable_if<std::is_copy_constructible<T>::value && !std::is_copy_assignable<T>::value>::type
+    copy(const T &src, T &dst)
+    {
+        new(&dst) T(src);
+    }
+
+    template <class T>
+    typename std::enable_if<std::is_copy_assignable<T>::value>::type
+    copy(const T &src, T &dst)
+    {
+        dst = src;
+    }
+
+    template <class T>
+    typename std::enable_if<std::is_pod<T>::value && !std::is_copy_assignable<T>::value && !std::is_copy_constructible<T>::value>::type
+    copy(const T &src, T &dst)
+    {
+        memcpy(&dst, &src, sizeof(T));
+    }
 }
 }
 
