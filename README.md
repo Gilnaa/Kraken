@@ -30,7 +30,7 @@ The library contains (or will contain in the near future), the following wrapper
 - [x] `File` - A wrapper for the basic and most common Linux File operations:
   - [x] `Open` & `Close`.
   - [x] `Read` & `Write` (+ at an offset).
-  - [ ] `VectorRead` & `VectorWrite` (+ at an offset).
+  - [x] `VectorRead` & `VectorWrite` (+ at an offset).
   - [x] `IOControl`
   - [ ] `Splice`
   - [x] `File::Pipe` - Create a pair of pipe ends using the `pipe` syscall.

@@ -28,9 +28,10 @@
 #ifndef KRAKEN_COLLECTIONS_H_H
 #define KRAKEN_COLLECTIONS_H_H
 
-#include <stdlib.h>     // For size_t
-#include <type_traits>  // For false_type, true_type, is_pod
 #include <Kraken/MetaSquid.h>
+#include <stdlib.h>
+#include <stddef.h>
+#include <sys/uio.h>
 
 namespace Kraken
 {
@@ -189,6 +190,71 @@ namespace Kraken
             return (buffer != nullptr) && (length > 0);
         }
     };
+
+    /**
+     * template-gettho used to contain the conversion between a membuf and an iovec.
+     *
+     * Usually they're defined the same way, but AFAIK it is not promised to be so.
+     * In case they are interchangable, there is no actual conversion (membuf[] = iovec[]),
+     * else, a new iovec[] is created and the pointers are copied.
+     */
+    namespace details
+    {
+        using membuf_is_iovec = std::integral_constant<bool, (sizeof(membuf) == sizeof(iovec)) &&
+                                                             (offsetof(membuf, buffer) == offsetof(iovec, iov_base)) &&
+                                                             (offsetof(membuf, length) == offsetof(iovec, iov_len))>;
+
+        template <bool S>
+        struct membuf_iovec_provider;
+
+        template <>
+        struct membuf_iovec_provider<true>
+        {
+            template <size_t N>
+            using iovec_type = struct iovec *;
+
+            template <size_t N>
+            static inline void copy(membuf (&src)[N], iovec_type<N> &dest)
+            {
+                dest = (iovec_type<N>)&src;
+            }
+
+            template <size_t N>
+            static inline void copy(const_membuf (&src)[N], iovec_type<N> &dest)
+            {
+                dest = (iovec_type<N>)&src;
+            }
+        };
+
+        template <>
+        struct membuf_iovec_provider<false>
+        {
+            template <size_t N>
+            using iovec_type = struct iovec [N];
+
+            template <size_t N>
+            static void copy(membuf (&src)[N], iovec_type<N> &dest)
+            {
+                for (size_t i = 0; i < N; i++)
+                {
+                    dest[i].iov_base = src[i].buffer;
+                    dest[i].iov_len = src[i].length;
+                }
+            }
+
+            template <size_t N>
+            static void copy(const_membuf (&src)[N], iovec_type<N> &dest)
+            {
+                for (size_t i = 0; i < N; i++)
+                {
+                    dest[i].iov_base = const_cast<void *>(src[i].buffer);
+                    dest[i].iov_len = src[i].length;
+                }
+            }
+        };
+
+        using membuf_iovec_converter = membuf_iovec_provider<membuf_is_iovec::value>;
+    }
 }
 
 #endif //KRAKEN_COLLECTIONS_H_H

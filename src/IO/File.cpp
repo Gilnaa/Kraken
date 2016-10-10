@@ -179,3 +179,47 @@ int File::Pipe(File &o_readEnd, File &o_writeEnd, EFileFlags flags)
 
     return 0;
 }
+
+ssize_t File::Read(iovec *vectors, size_t vectorCount)
+{
+    ssize_t bytesRead = readv(m_descriptor, vectors, (int)vectorCount);
+    if (bytesRead < 0)
+    {
+        bytesRead = -errno;
+    }
+
+    return bytesRead;
+}
+
+ssize_t File::Read(iovec *vectors, size_t vectorCount, off_t offset)
+{
+    ssize_t bytesRead = preadv(m_descriptor, vectors, (int)vectorCount, offset);
+    if (bytesRead < 0)
+    {
+        bytesRead = -errno;
+    }
+
+    return bytesRead;
+}
+
+ssize_t File::Write(iovec *vectors, size_t vectorCount)
+{
+    ssize_t bytesWritten = writev(m_descriptor, vectors, (int)vectorCount);
+    if (bytesWritten < 0)
+    {
+        bytesWritten = -errno;
+    }
+
+    return bytesWritten;
+}
+
+ssize_t File::Write(iovec *vectors, size_t vectorCount, off_t offset)
+{
+    ssize_t bytesWritten = pwritev(m_descriptor, vectors, (int)vectorCount, offset);
+    if (bytesWritten < 0)
+    {
+        bytesWritten = -errno;
+    }
+
+    return bytesWritten;
+}

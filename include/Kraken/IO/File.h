@@ -34,6 +34,7 @@
 #include <Kraken/IO/IEPollable.h>
 #include <Kraken/IO/IStream.h>
 #include <sys/stat.h>
+#include <sys/uio.h>
 
 namespace Kraken
 {
@@ -241,16 +242,74 @@ namespace Kraken
             return Read(o_mem.buffer, o_mem.length, offset);
         }
 
+        /**
+         * Read data from the file into multiple buffers.
+         *
+         * @tparam N    The number of vectors.
+         *
+         * @param vectors   The buffers to read to.
+         * @return On success, the total amount of bytes read; `-errno` on error.
+         */
         template <size_t N>
-        ssize_t Read(membuf (&vectors)[N])
+        inline ssize_t Read(membuf (&vectors)[N])
         {
+            details::membuf_iovec_converter::iovec_type<N> nativeVectors;
+            details::membuf_iovec_converter::copy(vectors, nativeVectors);
 
+            return Read(nativeVectors, N);
         }
 
+        /**
+         * Read data from the file into multiple buffers.
+         *
+         * @tparam N    The number of vectors.
+         *
+         * @param vectors   The buffers to read to.
+         * @param offset    The statring offset of the operation.
+         * @return On success, the total amount of bytes read; `-errno` on error.
+         */
         template <size_t N>
-        ssize_t Read(membuf (&vectors)[N], off_t offset)
+        inline ssize_t Read(membuf (&vectors)[N], off_t offset)
         {
+            details::membuf_iovec_converter::iovec_type<N> nativeVectors;
+            details::membuf_iovec_converter::copy(vectors, nativeVectors);
 
+            return Read(nativeVectors, N, offset);
+        }
+
+        /**
+         * Write data from multiple buffers into the file.
+         *
+         * @tparam N    The number of vectors.
+         *
+         * @param vectors   The vectors to write.
+         * @return On success, the total amount of bytes written; `-errno` on error.
+         */
+        template <size_t N>
+        inline ssize_t Write(const_membuf (&vectors)[N])
+        {
+            details::membuf_iovec_converter::iovec_type<N> nativeVectors;
+            details::membuf_iovec_converter::copy(vectors, nativeVectors);
+
+            return Write(nativeVectors, N);
+        }
+
+        /**
+         * Write data from multiple buffers into the file.
+         *
+         * @tparam N    The number of vectors.
+         *
+         * @param vectors   The vectors to write.
+         * @param offset    The statring offset of the operation.
+         * @return On success, the total amount of bytes written; `-errno` on error.
+         */
+        template <size_t N>
+        inline ssize_t Write(const_membuf (&vectors)[N], off_t offset)
+        {
+            details::membuf_iovec_converter::iovec_type<N> nativeVectors;
+            details::membuf_iovec_converter::copy(vectors, nativeVectors);
+
+            return Write(nativeVectors, N, offset);
         }
 
         /**
@@ -349,6 +408,12 @@ namespace Kraken
         fd_t m_descriptor;
 
     private:
+        // Internal vector implementations.
+        ssize_t Read(iovec vectors[], size_t vectorCount);
+        ssize_t Read(iovec vectors[], size_t vectorCount, off_t offset);
+        ssize_t Write(iovec vectors[], size_t vectorCount);
+        ssize_t Write(iovec vectors[], size_t vectorCount, off_t offset);
+
         /**
          * Deleted to disallow duplicating the file.
          */

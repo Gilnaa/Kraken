@@ -46,3 +46,20 @@ TEST(FileTests, UMask)
     ASSERT_EQ(expectedOriginal, originalValue);
     umask(originalValue);
 }
+
+TEST(FileTests, Vectors)
+{
+    File read, write;
+    buffer<16> a(0);
+    buffer<16> b(2);
+    buffer<32> c;
+    const_membuf vec[] = {a, b};
+
+    ASSERT_EQ(File::Pipe(read, write), 0);
+
+    ASSERT_EQ(write.Write(vec), 32);
+    ASSERT_EQ(read.Read(c), 32);
+
+    ASSERT_EQ(memcmp(a, c, sizeof(a)), 0);
+    ASSERT_EQ(memcmp(b, &c[16], sizeof(a)), 0);
+}
