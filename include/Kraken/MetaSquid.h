@@ -76,12 +76,18 @@ namespace MetaSquid
         return N;
     };
 
+    /**
+     * @return A reference to he last element of the given array.
+     */
     template <typename T, size_t N>
     constexpr T &last(T (&array)[N])
     {
         return array[N - 1];
     };
 
+    /**
+     * @return A const reference to he last element of the given array.
+     */
     template <typename T, size_t N>
     constexpr const T &last(const T (&array)[N])
     {
@@ -93,6 +99,10 @@ namespace MetaSquid
      */
     template<typename T>
     using is_enum_class = std::integral_constant<bool, std::is_enum<T>::value && !std::is_convertible<T, int>::value>;
+
+    ////////////////////////
+    //   Copy operations  //
+    ////////////////////////
 
     template <class T>
     typename std::enable_if<std::is_copy_constructible<T>::value && !std::is_copy_assignable<T>::value>::type

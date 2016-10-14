@@ -225,7 +225,7 @@ namespace Kraken
          *
          * @return  The number of bytes read on success; `-errno` on error.
          */
-        ssize_t Read(void *o_buffer, size_t length, off_t offset);
+        ssize_t ReadAt(void *o_buffer, size_t length, off_t offset);
 
         /**
          * Read from an offset in the file into the given membuf.
@@ -237,9 +237,9 @@ namespace Kraken
          *
          * @return  The number of bytes read on success; `-errno` on error.
          */
-        inline ssize_t Read(membuf o_mem, off_t offset)
+        inline ssize_t ReadAt(membuf o_mem, off_t offset)
         {
-            return Read(o_mem.buffer, o_mem.length, offset);
+            return ReadAt(o_mem.buffer, o_mem.length, offset);
         }
 
         /**
@@ -335,7 +335,7 @@ namespace Kraken
          *
          * @return The amount of bytes written on success; `-errno` otherwise.
          */
-        ssize_t Write(const void *buffer, size_t length, off_t offset);
+        ssize_t WriteAt(const void *buffer, size_t length, off_t offset);
 
         /**
          * Write the given buffer to the file at an offset.
@@ -347,9 +347,9 @@ namespace Kraken
          *
          * @return The amount of bytes written on success; `-errno` otherwise.
          */
-        inline ssize_t Write(const_membuf mem, off_t offset)
+        inline ssize_t WriteAt(const_membuf mem, off_t offset)
         {
-            return Write(mem.buffer, mem.length, offset);
+            return WriteAt(mem.buffer, mem.length, offset);
         }
 
         /**
@@ -388,6 +388,7 @@ namespace Kraken
             return m_descriptor;
         }
 
+    public:
         /**
          * Creates a new uni-directional pipe and places its ends in the given `File`s.
          *

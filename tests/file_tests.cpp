@@ -63,3 +63,20 @@ TEST(FileTests, Vectors)
     ASSERT_EQ(memcmp(a, c, sizeof(a)), 0);
     ASSERT_EQ(memcmp(b, &c[16], sizeof(a)), 0);
 }
+
+TEST(FileTests, OffsetIO)
+{
+    File temp(fileno(tmpfile()));
+    uint8_t bigSample[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    uint8_t buf[sizeof(bigSample) / 2];
+    const_membuf expected(&bigSample[5], sizeof(bigSample) / 2);
+
+    uint8_t initialValue[128] = { 0 };
+    memset(initialValue, 0, sizeof(initialValue));
+
+    temp.Write(initialValue);
+    temp.WriteAt(bigSample, 64);
+    temp.ReadAt(buf, 64 + sizeof(bigSample) / 2);
+
+    ASSERT_EQ(memcmp(buf, expected.buffer, expected.length), 0);
+}
