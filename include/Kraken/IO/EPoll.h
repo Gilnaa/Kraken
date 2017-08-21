@@ -60,7 +60,6 @@ namespace Kraken
             int descriptor = epoll_create1(0);
             if (descriptor < 0)
             {
-                // TODO: KRAKEN_PRINT
                 return -errno;
             }
 

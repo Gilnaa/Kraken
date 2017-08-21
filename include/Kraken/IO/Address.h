@@ -151,12 +151,10 @@ namespace Kraken
         {
             if (path == nullptr)
             {
-                // TODO: KRAKEN_PRINT
                 return false;
             }
             else if (path[0] == '\0')
             {
-                // TODO: KRAKEN_PRINT
                 return false;
             }
 
@@ -176,12 +174,10 @@ namespace Kraken
 
             if (path == nullptr)
             {
-                // TODO: KRAKEN_PRINT
                 return false;
             }
             else if (pathLength >= s_MaxPathLength)
             {
-                // TODO: KRAKEN_PRINT
                 return false;
             }
 

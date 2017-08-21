@@ -28,6 +28,7 @@
 #include "Kraken/IO/File.h"
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <Kraken/Features.h>
 
 using namespace Kraken;
 
@@ -180,6 +181,9 @@ int File::Pipe(File &o_readEnd, File &o_writeEnd, EFileFlags flags)
     return 0;
 }
 
+#ifdef KRAKEN_OPT_DISABLE_READV
+HANDLE_MISSING_FUNCTION(ssize_t, File::Read, iovec *, size_t);
+#else
 ssize_t File::Read(iovec *vectors, size_t vectorCount)
 {
     ssize_t bytesRead = readv(m_descriptor, vectors, (int)vectorCount);
@@ -190,7 +194,11 @@ ssize_t File::Read(iovec *vectors, size_t vectorCount)
 
     return bytesRead;
 }
+#endif
 
+#ifdef KRAKEN_OPT_DISABLE_PREADV
+HANDLE_MISSING_FUNCTION(ssize_t, File::Read,iovec *, size_t, off_t);
+#else
 ssize_t File::Read(iovec *vectors, size_t vectorCount, off_t offset)
 {
     ssize_t bytesRead = preadv(m_descriptor, vectors, (int)vectorCount, offset);
@@ -201,7 +209,11 @@ ssize_t File::Read(iovec *vectors, size_t vectorCount, off_t offset)
 
     return bytesRead;
 }
+#endif
 
+#ifdef KRAKEN_OPT_DISABLE_WRITEV
+HANDLE_MISSING_FUNCTION(ssize_t, File::Write, iovec *, size_t);
+#else
 ssize_t File::Write(iovec *vectors, size_t vectorCount)
 {
     ssize_t bytesWritten = writev(m_descriptor, vectors, (int)vectorCount);
@@ -212,7 +224,11 @@ ssize_t File::Write(iovec *vectors, size_t vectorCount)
 
     return bytesWritten;
 }
+#endif
 
+#ifdef KRAKEN_OPT_DISABLE_PWRITEV
+HANDLE_MISSING_FUNCTION(ssize_t, File::Write, iovec *, size_t, off_t);
+#else
 ssize_t File::Write(iovec *vectors, size_t vectorCount, off_t offset)
 {
     ssize_t bytesWritten = pwritev(m_descriptor, vectors, (int)vectorCount, offset);
@@ -223,3 +239,4 @@ ssize_t File::Write(iovec *vectors, size_t vectorCount, off_t offset)
 
     return bytesWritten;
 }
+#endif

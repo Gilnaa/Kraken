@@ -119,7 +119,6 @@ namespace Kraken
 
             if (IsOpen())
             {
-                // TODO: KRAKEN_PRINT
                 return -EBUSY;
             }
 
@@ -193,7 +192,6 @@ namespace Kraken
 
             if (err != 0)
             {
-                // TODO: KRAKEN_PRINT
                 return -errno;
             }
 
@@ -230,7 +228,6 @@ namespace Kraken
 
             if (o_client.IsOpen())
             {
-                // TODO: KRAKEN_PRINT
                 return -EBUSY;
             }
 
@@ -262,7 +259,6 @@ namespace Kraken
 
             if (buffer == nullptr)
             {
-                // TODO: KRAKEN_PRINT
                 return -EINVAL;
             }
 
@@ -290,7 +286,6 @@ namespace Kraken
 
             if (buffer == nullptr)
             {
-                // TODO: KRAKEN_PRINT
                 return -EINVAL;
             }
 
@@ -317,14 +312,12 @@ namespace Kraken
 
             if (o_buffer == nullptr)
             {
-                // TODO: KRAKEN_PRINT
                 return -EINVAL;
             }
 
             bytesReceived = recv(m_descriptor, o_buffer, length, (int)flags);
             if (bytesReceived < 0)
             {
-                // TODO: KRAKEN_PRINT
                 bytesReceived = -errno;
             }
 
@@ -347,14 +340,12 @@ namespace Kraken
 
             if (o_buffer == nullptr)
             {
-                // TODO: KRAKEN_PRINT
                 return -EINVAL;
             }
 
             bytesReceived = recvfrom(m_descriptor, o_buffer, length, (int)flags, o_senderAddress.GetBase(), &addressLength);
             if (bytesReceived < 0)
             {
-                // TODO: KRAKEN_PRINT
                 return -errno;
             }
 
